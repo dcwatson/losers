@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ player.league }} - Week {{ week }}</h2>
+
+{% if locked %}
+    <p>Picks for this week are locked in. Each players picks are listed below.</p>
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>Winner Pick</th>
+                <th>Loser Pick</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in all_picks %}
+                <tr>
+                    <td>{{ p.player }}</td>
+                    <td>{{ p.winner }}</td>
+                    <td>{{ p.loser }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Select your picks for the week below. Picks must be entered before the first Sunday game of the week.</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Select winner:</label>
+            <select name="winner" class="form-control">
+                {% for t in remaining_teams %}
+                    <option value="{{ t.pk }}"{% if t == pick.winner %} selected="selected"{% endif %}>{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Select loser:</label>
+            <select name="loser" class="form-control">
+                {% for t in remaining_teams %}
+                    <option value="{{ t.pk }}"{% if t == pick.loser %} selected="selected"{% endif %}>{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Picks</button>
+    </form>
+{% endif %}
+
+<h3>Week {{ week }} Schedule</h3>
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Away</th>
+            <th>Home</th>
+            <th>Game Date</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for g in games %}
+            <tr>
+                <td{% if g.away_team == g.winner %} class="success"{% endif %}>
+                    {{ g.away_team }}
+                </td>
+                <td{% if g.home_team == g.winner %} class="success"{% endif %}>
+                    @{{ g.home_team }}
+                </td>
+                <td>{{ g.game_date }}</td>
+                <td>{{ g.score }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

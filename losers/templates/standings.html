@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Standings</h2>
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Correct Picks</th>
+            <th>Winners</th>
+            <th>Losers</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p, counts in standings %}
+            <tr>
+                <td>{{ p }}</td>
+                <td>{{ counts.total }}</td>
+                <td>{{ counts.winners }}</td>
+                <td>{{ counts.losers }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

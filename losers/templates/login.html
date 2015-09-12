@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <h3>League Login</h3>
+        <p>You will receive an email with a link to complete the log in process.</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Enter your email address" autofocus="autofocus" />
+            </div>
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
