@@ -3,8 +3,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '$=x_)b##pba18^i(5=wtsw@^$plpg23pwaf@8_c!s!5b9ndhxr'
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = os.environ.get('DEBUG', '') != ''
+ALLOWED_HOSTS = ['losers.temp.io']
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -87,7 +87,6 @@ if DEBUG:
 PIPELINE_CSS = {
     'watchtower': {
         'source_filenames': (
-            'css/losers.css',
         ),
         'output_filename': 'losers.css',
     },
