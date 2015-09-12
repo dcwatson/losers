@@ -11,7 +11,7 @@ You may log in using the link below:
 %(link)s
 
 If you did not request this email, please disregard.
-"""
+""".strip()
 
 def login(request, code=None):
     if code:
@@ -36,6 +36,13 @@ def login(request, code=None):
         })
     return render(request, 'login.html', {
     })
+
+def logout(request):
+    try:
+        del request.session['player_id']
+    except:
+        pass
+    return redirect('login')
 
 @player_required
 def pick(request):
@@ -103,4 +110,14 @@ def standings(request):
     return render(request, 'standings.html', {
         'player': request.player,
         'standings': sorted(players.items(), key=lambda d: d[1]['total'], reverse=True),
+    })
+
+@player_required
+def profile(request):
+    if request.method == 'POST':
+        request.player.name = request.POST.get('name', '').strip()
+        request.player.save()
+        return redirect('pick')
+    return render(request, 'profile.html', {
+        'player': request.player,
     })
