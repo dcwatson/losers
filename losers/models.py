@@ -99,9 +99,9 @@ class Pick (models.Model):
         return Game.objects.filter(year=self.player.league.year, week=self.week, loser=self.loser).exists()
 
 def random_key():
-    return get_random_string(40)
+    return get_random_string(20)
 
 class Login (models.Model):
-    code = models.CharField(max_length=40, unique=True, default=random_key)
+    code = models.CharField(max_length=20, unique=True, default=random_key)
     email = models.EmailField()
     date_created = models.DateTimeField(default=timezone.now)
