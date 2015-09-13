@@ -17,8 +17,8 @@
             {% for p in all_picks %}
                 <tr>
                     <td>{{ p.player }}</td>
-                    <td>{{ p.winner }}</td>
-                    <td>{{ p.loser }}</td>
+                    <td{% if p.winner_correct %} class="success"{% endif %}>{{ p.winner }}</td>
+                    <td{% if p.loser_correct %} class="success"{% endif %}>{{ p.loser }}</td>
                 </tr>
             {% endfor %}
         </tbody>
