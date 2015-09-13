@@ -15,6 +15,7 @@ class LeagueAdmin (admin.ModelAdmin):
 
 class PickAdmin (admin.ModelAdmin):
     list_display = ('player', 'week', 'winner', 'loser')
+    list_filter = ('week', 'player')
 
 admin.site.register(Game, GameAdmin)
 admin.site.register(League, LeagueAdmin)
