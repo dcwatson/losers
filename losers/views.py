@@ -77,6 +77,10 @@ def pick(request):
         if winner not in remaining_teams or loser not in remaining_teams:
             messages.error(request, 'You selected a team that you previously picked, or has already played their game.')
             return redirect('pick')
+        for g in games:
+            if set([g.home_team, g.away_team]) == set([winner, loser]):
+                messages.error(request, 'You cannot select a winner and loser from the same game.')
+                return redirect('pick')
         if my_pick:
             my_pick.winner = winner
             my_pick.loser = loser
