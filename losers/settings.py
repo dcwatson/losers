@@ -85,15 +85,16 @@ if DEBUG:
 # Pipeline
 
 PIPELINE_CSS = {
-    'watchtower': {
+    'losers': {
         'source_filenames': (
+            'css/losers.css',
         ),
         'output_filename': 'losers.css',
     },
 }
 
 PIPELINE_JS = {
-    'watchtower': {
+    'losers': {
         'source_filenames': (
         ),
         'output_filename': 'losers.js',
