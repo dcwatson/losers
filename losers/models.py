@@ -6,6 +6,7 @@ from django.utils import timezone
 QUARTER_CHOICES = (
     ('P', 'Pre-Game'),
     ('F', 'Final'),
+    ('FO', 'Final (Overtime)'),
 )
 
 class Team (models.Model):

@@ -34,7 +34,7 @@ class Command (BaseCommand):
             game.home_score = int(g['hs'])
             game.away_score = int(g['vs'])
             game.quarter = g['q']
-            if game.quarter == 'F':
+            if game.quarter.startswith('F'):
                 game.winner = home if game.home_score > game.away_score else away
                 game.loser = home if game.home_score < game.away_score else away
             game.save()
