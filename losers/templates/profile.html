@@ -10,6 +10,12 @@
             <div class="form-group">
                 <input type="text" class="form-control" name="name" placeholder="Your name" value="{{ player.name }}" autofocus="autofocus" />
             </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="send_reminders" value="1"{% if player.send_reminders %} checked="checked"{% endif %} />
+                    Send weekly pick reminders
+                </label>
+            </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>

@@ -120,6 +120,7 @@ def standings(request):
 def profile(request):
     if request.method == 'POST':
         request.player.name = request.POST.get('name', '').strip()
+        request.player.send_reminders = request.POST.get('send_reminders', '') == '1'
         request.player.save()
         return redirect('pick')
     return render(request, 'profile.html', {

@@ -72,6 +72,7 @@ class Player (models.Model):
     email = models.EmailField()
     name = models.CharField(max_length=100, blank=True)
     paid = models.BooleanField(default=False)
+    send_reminders = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('league', 'email')
