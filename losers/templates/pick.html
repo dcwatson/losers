@@ -55,7 +55,7 @@
             <th>Away</th>
             <th>Home</th>
             <th>Game Date</th>
-            <th>Score</th>
+            <th>{% if locked %}Score{% else %}Spread{% endif %}</th>
         </tr>
     </thead>
     <tbody>
@@ -68,7 +68,7 @@
                     @{{ g.home_team }}
                 </td>
                 <td>{{ g.game_date }}</td>
-                <td>{{ g.score }}</td>
+                <td>{% if locked %}{{ g.score }}{% else %}{{ g.spread }}{% endif %}</td>
             </tr>
         {% endfor %}
     </tbody>

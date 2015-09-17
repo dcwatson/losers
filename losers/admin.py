@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Game, League, Player, Pick
 
 class GameAdmin (admin.ModelAdmin):
-    list_display = ('eid', 'home_team', 'away_team', 'week', 'game_date', 'winner', 'loser')
+    list_display = ('eid', 'home_team', 'away_team', 'week', 'game_date', 'spread', 'winner', 'loser')
 
 class PlayerInline (admin.TabularInline):
     model = Player

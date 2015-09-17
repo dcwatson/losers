@@ -28,6 +28,8 @@ class Game (models.Model):
     week = models.IntegerField()
     home_score = models.IntegerField(default=0)
     away_score = models.IntegerField(default=0)
+    home_spread = models.DecimalField(max_digits=3, decimal_places=1, default=0)
+    away_spread = models.DecimalField(max_digits=3, decimal_places=1, default=0)
     quarter = models.CharField(max_length=10, choices=QUARTER_CHOICES)
     winner = models.ForeignKey(Team, null=True, blank=True, related_name='wins')
     loser = models.ForeignKey(Team, null=True, blank=True, related_name='losses')
@@ -58,6 +60,15 @@ class Game (models.Model):
             return '%s-%s' % (self.away_score, self.home_score)
         else:
             return ''
+
+    @property
+    def spread(self):
+        if self.home_spread < self.away_spread:
+            return '%s %s' % (self.home_team.abbreviation, self.home_spread)
+        if self.away_spread < self.home_spread:
+            return '%s %s' % (self.away_team.abbreviation, self.away_spread)
+        else:
+            return 'Even'
 
 class League (models.Model):
     name = models.CharField(max_length=100)

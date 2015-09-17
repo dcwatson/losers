@@ -4,11 +4,13 @@ from django.conf import settings
 from losers.models import Team, Game
 import requests
 import datetime
+import decimal
 import drill
 import time
 import pytz
 
 SCORESTRIP_URL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml?random=%s'
+LINE_URL = 'http://xml.pinnaclesports.com/pinnaclefeed.aspx?sporttype=football&sportsubtype=nfl'
 
 class Command (BaseCommand):
     def handle(self, *args, **options):
@@ -38,3 +40,18 @@ class Command (BaseCommand):
                 game.winner = home if game.home_score > game.away_score else away
                 game.loser = home if game.home_score < game.away_score else away
             game.save()
+        # Load point spreads
+        root = drill.parse(LINE_URL)
+        for event in root.find('events/event'):
+            game_date = datetime.datetime.strptime(event.event_datetimeGMT.data, '%Y-%m-%d %H:%M')
+            game_date = timezone.make_aware(game_date, pytz.utc)
+            home = away = ''
+            home_spread = away_spread = 0
+            for p in event.participants:
+                if p.visiting_home_draw.data == 'Home':
+                    home = p.participant_name.data.split()[-1].lower()
+                elif p.visiting_home_draw.data == 'Visiting':
+                    away = p.participant_name.data.split()[-1].lower()
+            home_spread = decimal.Decimal(event.periods.period.spread.spread_home.data)
+            away_spread = decimal.Decimal(event.periods.period.spread.spread_visiting.data)
+            Game.objects.filter(home_team__name=home, away_team__name=away, game_date=game_date).update(home_spread=home_spread, away_spread=away_spread)
