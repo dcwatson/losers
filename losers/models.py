@@ -65,7 +65,7 @@ class Game (models.Model):
     def spread(self):
         if self.home_spread < self.away_spread:
             return '%s %s' % (self.home_team.abbreviation, self.home_spread)
-        if self.away_spread < self.home_spread:
+        elif self.away_spread < self.home_spread:
             return '%s %s' % (self.away_team.abbreviation, self.away_spread)
         else:
             return 'Even'
