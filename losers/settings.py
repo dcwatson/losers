@@ -82,6 +82,10 @@ DEFAULT_FROM_EMAIL = 'noreply@losers.temp.io'
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Sessions
+
+SESSION_COOKIE_AGE = 90 * 24 * 60 * 60
+
 # Pipeline
 
 PIPELINE_CSS = {
