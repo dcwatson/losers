@@ -25,7 +25,11 @@ class Command (BaseCommand):
             away, _created = Team.objects.get_or_create(abbreviation=g['v'], defaults={'name': g['vnn']})
             game_date = datetime.datetime.strptime(g['eid'][:8], '%Y%m%d')
             hour, minute = [int(p) for p in g['t'].split(':', 1)]
-            game_date = game_date.replace(hour=hour + 12, minute=minute)
+            # The feed does not specify AM/PM, so I just assume most games are PM. Not the case for some situations,
+            # like the games in the UK (9:30 AM EST), but oh well.
+            if hour < 12:
+                hour += 12
+            game_date = game_date.replace(hour=hour, minute=minute)
             game, _created = Game.objects.get_or_create(eid=g['eid'], defaults={
                 'home_team': home,
                 'away_team': away,
