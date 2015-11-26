@@ -47,6 +47,7 @@ def logout(request):
 @player_required
 def pick(request):
     current_week = Game.objects.latest('game_date').week
+    my_pick = request.player.picks.filter(week=current_week).first()
     # Get a list of all the games this week.
     games = list(Game.objects.filter(year=request.player.league.year, week=current_week).select_related('home_team', 'away_team', 'winner', 'loser'))
     exclude_ids = set()
@@ -59,23 +60,38 @@ def pick(request):
             exclude_ids.add(g.away_team_id)
             if g.sunday:
                 locked = True
+    # Lock the winner/loser picks if the games have started.
+    winner_started = my_pick.winner_id in exclude_ids if my_pick else False
+    loser_started = my_pick.loser_id in exclude_ids if my_pick else False
     # Don't let players pick any team they've picked before.
     for pick in request.player.picks.filter(week__lt=current_week):
         exclude_ids.update([pick.winner_id, pick.loser_id])
-    my_pick = request.player.picks.filter(week=current_week).first()
     remaining_teams = list(Team.objects.exclude(pk__in=exclude_ids))
     all_picks = Pick.objects.filter(player__league=request.player.league, week=current_week) if locked else []
     if request.method == 'POST':
         if locked:
             messages.error(request, 'Picks for this week have been locked.')
             return redirect('pick')
-        winner = Team.objects.get(pk=request.POST['winner'])
-        loser = Team.objects.get(pk=request.POST['loser'])
+        if 'winner' in request.POST:
+            # If submitting a new pick, make sure the game hasn't started, and it's not a repeat pick.
+            winner = Team.objects.get(pk=request.POST['winner'])
+            if winner not in remaining_teams:
+                messages.error(request, 'You selected a team that you previously picked, or has already played their game.')
+                return redirect('pick')
+        else:
+            # Otherwise, use the already-picked winner.
+            winner = my_pick.winner
+        if 'loser' in request.POST:
+            # If submitting a new pick, make sure the game hasn't started, or it's not a repeat pick.
+            loser = Team.objects.get(pk=request.POST['loser'])
+            if loser not in remaining_teams:
+                messages.error(request, 'You selected a team that you previously picked, or has already played their game.')
+                return redirect('pick')
+        else:
+            # Otherwise, use the already-picked loser.
+            loser = my_pick.loser
         if winner == loser:
             messages.error(request, 'You cannot select the same team to win and lose.')
-            return redirect('pick')
-        if winner not in remaining_teams or loser not in remaining_teams:
-            messages.error(request, 'You selected a team that you previously picked, or has already played their game.')
             return redirect('pick')
         for g in games:
             if set([g.home_team, g.away_team]) == set([winner, loser]):
@@ -97,6 +113,8 @@ def pick(request):
         'locked': locked,
         'all_picks': all_picks,
         'remaining_teams': remaining_teams,
+        'winner_started': winner_started,
+        'loser_started': loser_started,
     })
 
 @player_required
