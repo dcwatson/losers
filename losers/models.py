@@ -89,7 +89,11 @@ class Player (models.Model):
         unique_together = ('league', 'email')
 
     def __str__(self):
-        return self.name or self.email
+        return self.name or self.truncated_email
+
+    @property
+    def truncated_email(self):
+        return self.email.split('@')[0]
 
 class Pick (models.Model):
     player = models.ForeignKey(Player, related_name='picks')

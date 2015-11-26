@@ -2,26 +2,24 @@
 
 {% block content %}
 <h2>Standings</h2>
-<div class="table-responsive">
-    <table class="table table-condensed table-striped">
-        <thead>
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Correct</th>
+            <th>Winners</th>
+            <th>Losers</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p, counts in standings %}
             <tr>
-                <th>Player</th>
-                <th>Correct</th>
-                <th>Winners</th>
-                <th>Losers</th>
+                <td>{{ p }}</td>
+                <td>{{ counts.total }}</td>
+                <td>{{ counts.winners }}</td>
+                <td>{{ counts.losers }}</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for p, counts in standings %}
-                <tr>
-                    <td>{{ p }}</td>
-                    <td>{{ counts.total }}</td>
-                    <td>{{ counts.winners }}</td>
-                    <td>{{ counts.losers }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
