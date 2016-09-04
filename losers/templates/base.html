@@ -10,8 +10,8 @@
         <meta name="description" content="NFL Loser Pool" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <title>{% block title %}Losers{% endblock %}</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
         <link rel="apple-touch-icon" href="{% static "nfl.png" %}" />
         {% stylesheet "losers" %}
     </head>
@@ -55,8 +55,8 @@
             {% block content %}
             {% endblock %}
         </div>
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         {% javascript "losers" %}
         {% block javascript %}{% endblock javascript %}
     </body>

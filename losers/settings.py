@@ -6,7 +6,7 @@ SECRET_KEY = '$=x_)b##pba18^i(5=wtsw@^$plpg23pwaf@8_c!s!5b9ndhxr'
 DEBUG = os.environ.get('DEBUG', '') != '' or os.uname().sysname == 'Darwin'
 ALLOWED_HOSTS = ['localhost', 'losers.temp.io']
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -15,18 +15,17 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'pipeline',
     'losers',
-)
+]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-)
+]
 
 ROOT_URLCONF = 'losers.urls'
 WSGI_APPLICATION = 'losers.wsgi.application'
@@ -88,19 +87,20 @@ SESSION_COOKIE_AGE = 90 * 24 * 60 * 60
 
 # Pipeline
 
-PIPELINE_CSS = {
-    'losers': {
-        'source_filenames': (
-            'css/losers.css',
-        ),
-        'output_filename': 'losers.css',
+PIPELINE = {
+    'STYLESHEETS': {
+        'losers': {
+            'source_filenames': (
+                'css/losers.css',
+            ),
+            'output_filename': 'losers.css',
+        },
     },
-}
-
-PIPELINE_JS = {
-    'losers': {
-        'source_filenames': (
-        ),
-        'output_filename': 'losers.js',
+    'JAVASCRIPT': {
+        'losers': {
+            'source_filenames': (
+            ),
+            'output_filename': 'losers.js',
+        },
     },
 }

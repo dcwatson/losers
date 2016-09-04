@@ -23,7 +23,7 @@ def login(request, code=None):
         player, created = league.players.get_or_create(email=token.email)
         request.session['player_id'] = player.pk
         token.delete()
-        return redirect('pick')
+        return redirect('profile') if created else redirect('pick')
     if request.method == 'POST':
         email = request.POST.get('email', '').strip().lower()
         if email:
