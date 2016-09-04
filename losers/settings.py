@@ -84,6 +84,8 @@ if DEBUG:
 # Sessions
 
 SESSION_COOKIE_AGE = 90 * 24 * 60 * 60
+SESSION_COOKIE_SECURE = os.environ.get('HTTPS', '') != ''
+CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
 
 # Pipeline
 
