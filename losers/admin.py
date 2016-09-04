@@ -3,6 +3,7 @@ from .models import Game, League, Player, Pick
 
 class GameAdmin (admin.ModelAdmin):
     list_display = ('eid', 'home_team', 'away_team', 'week', 'game_date', 'spread', 'winner', 'loser')
+    ordering = ('-year', 'week', 'eid')
 
 class PlayerInline (admin.TabularInline):
     model = Player
@@ -15,7 +16,7 @@ class LeagueAdmin (admin.ModelAdmin):
 
 class PickAdmin (admin.ModelAdmin):
     list_display = ('player', 'week', 'winner', 'loser')
-    list_filter = ('week', 'player')
+    list_filter = ('player__league', 'week', 'player')
 
 admin.site.register(Game, GameAdmin)
 admin.site.register(League, LeagueAdmin)
