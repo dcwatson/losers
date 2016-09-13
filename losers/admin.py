@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Game, League, Player, Pick
+from .models import Game, League, Player, Pick, Team
+
+class TeamAdmin (admin.ModelAdmin):
+    list_display = ('name', 'abbreviation')
 
 class GameAdmin (admin.ModelAdmin):
     list_display = ('eid', 'home_team', 'away_team', 'week', 'game_date', 'spread', 'winner', 'loser')
@@ -18,6 +21,7 @@ class PickAdmin (admin.ModelAdmin):
     list_display = ('player', 'week', 'winner', 'loser')
     list_filter = ('player__league', 'week', 'player')
 
+admin.site.register(Team, TeamAdmin)
 admin.site.register(Game, GameAdmin)
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Pick, PickAdmin)

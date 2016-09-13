@@ -12,6 +12,15 @@ import pytz
 SCORESTRIP_URL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml?random=%s'
 LINE_URL = 'http://xml.pinnaclesports.com/pinnaclefeed.aspx?sporttype=football&sportsubtype=nfl'
 
+def get_team(name, abbr):
+    try:
+        t = Team.objects.get(name=name.lower().strip())
+        t.abbreviation = abbr.strip()
+        t.save()
+        return t
+    except:
+        return Team.objects.create(name=name.lower().strip(), abbreviation=abbr.strip())
+
 class Command (BaseCommand):
     def handle(self, *args, **options):
         t = int(time.time() * 1000)
@@ -21,8 +30,8 @@ class Command (BaseCommand):
         week = int(ss.gms['w'])
         tz = pytz.timezone('US/Eastern')
         for g in ss.gms.children('g'):
-            home, _created = Team.objects.get_or_create(abbreviation=g['h'], defaults={'name': g['hnn']})
-            away, _created = Team.objects.get_or_create(abbreviation=g['v'], defaults={'name': g['vnn']})
+            home = get_team(g['hnn'], g['h'])
+            away = get_team(g['vnn'], g['v'])
             game_date = datetime.datetime.strptime(g['eid'][:8], '%Y%m%d')
             hour, minute = [int(p) for p in g['t'].split(':', 1)]
             # The feed does not specify AM/PM, so I just assume most games are PM. Not the case for some situations,
